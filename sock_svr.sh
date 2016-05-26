@@ -4,12 +4,12 @@
 source $(pwd)/config.ini
 
 function echo_msg(){
-    echo -e "\n$*\n"
+    echo -e "$*"
 }
 
 function chk_status(){
     if [ $? -ne '0' ];then
-        echo_msg something wrong !!
+        echo_msg "[INFO] something wrong !!"
         exit
     fi
 }
@@ -23,12 +23,12 @@ function up_sock_svr(){
     #  capture the client input command to sock_svr.log
     nohup nc -k -l -p $SOC_PORT &>$(pwd)/sock_svr.log & echo $! > $(pwd)/sock_svr.pid &
     chk_status
-    echo_msg "Start socket server"
+    echo_msg "[INFO] Start socket server"
 }
 
 function stop_sock_svr(){
     kill `cat $(pwd)/sock_svr.pid`
-    echo_msg "Stop socket server"
+    echo_msg "[INFO] Stop socket server"
 }
 
 #up_sock_svr
@@ -40,11 +40,11 @@ function read_sock_msg(){
 
         if [ $? -eq "0" ]; then
             # got power off msg from socket
-            echo_msg "Got power off msg"
+            echo_msg "[INFO] Got power off msg"
             return
         else
             # still in progress
-            echo_msg "Not receive poweroff msg, now waiting 10 sec"
+            echo_msg "[INFO] Not receive poweroff msg, now waiting 10 sec"
             sleep 10
         fi
     

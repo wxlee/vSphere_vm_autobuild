@@ -13,30 +13,34 @@ source $PWD/sock_svr.sh
 # resource check
 chk_tarball
 chk_iso
+chk_vsphere_datastore
 
 ch_ip=$(chk_ip_ssh)
 
 if [ "$ch_ip" == "ok" ]; then
-    echo "$IP_ADDR is already used, abort!!"
+    echo "[WARN] New vm $IP_ADDR is already used, abort!!"
     exit
+elif [ "$ch_ip" == "fail" ]; then
+    echo "[INFO] New vm $IP_ADDR can be assigned, go on."
 fi
+
 
 # build debian iso
 if [ "$REBUILD_ISO" == "no" ]; then
-    echo "rebuild (no), pack iso"
+    echo "[INFO] Rebuild (no), pack iso"
     
     # just repack
     add_script_to_iso
     upload_to_nas
 
 elif [ "$REBUILD_ISO" == "yes" ]; then
-    echo "rebuild (yes), generate entire iso"
+    echo "[INFO] Rebuild (yes), generate entire iso"
 
     # generate new debian iso
     gen_debian_iso
 
 else
-    echo "REBUILD_ISO just allow yes or no"
+    echo "[WARN] REBUILD_ISO just allow yes or no"
     exit
 fi
 
@@ -56,10 +60,10 @@ up_sock_svr
 # use busy waiting for vm config and poweroff
 read_sock_msg
 
-sleep 5
-echo "Detect vm poweroff, remove cd rom"
+sleep 10
+echo "[INFO] Detect vm poweroff, remove cd rom"
 remove_vcdrom
 
 sleep 5
-echo "Power on the new vm $IP_ADDR"
+echo "[INFO] Power on the new vm $IP_ADDR"
 power_on_vm

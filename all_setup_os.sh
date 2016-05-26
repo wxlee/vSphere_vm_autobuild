@@ -13,25 +13,25 @@ function echo_msg(){
 
 function chk_status(){
     if [ $? -ne '0' ];then
-        echo_msg something wrong !!
+        echo_msg "[WARN] Something wrong !!"
         exit
     fi
 }
 
 function start_sock_client(){
-    echo_msg "Start socket server at port $SOC_PORT to $SOC_SVR_IP"
+    echo_msg "[INFO] Start socket server at port $SOC_PORT to $SOC_SVR_IP"
     exec 3<>/dev/tcp/$SOC_SVR_IP/$SOC_PORT
 }
 
 
 function snd_sock_msg(){
-    echo_msg "Send msg to socket svr: $1"
+    echo_msg "[INFO] Send msg to socket svr: $1"
     echo -e "$1" >&3
 }
 
 
 function close_sock_client(){
-    echo_msg "Now close socket client"
+    echo_msg "[INFO] Now close socket client"
     exec 3<&-
     exec 3>&-
 }
@@ -43,32 +43,32 @@ cat << EEE > /tmp/chroot_cmd.sh
 # Walker 2016 05 03
 
 function echo_msg(){
-    echo -e "\n$*\n"
+    echo -e "$*"
 }
 
 function snd_sock_msg(){
-    echo_msg "Send msg to socket svr: $1"
+    echo_msg "[INFO] Send msg to socket svr: $1"
     echo -e "$1" >&3
 }
 
 
 
 function set_hostname(){
-    snd_sock_msg "start set_hostname"
+    snd_sock_msg "[INFO] Start set_hostname"
     echo "$HOST_NAME" > /etc/hostname
     echo "set hostname"
 }
 
 
 function set_grub(){
-    snd_sock_msg "start set_grub"
+    snd_sock_msg "[INFO] Start set_grub"
     grub-install /dev/sda
     update-grub
     echo "set grub"
 }
 
 function network_post(){
-    snd_sock_msg "start network_post"
+    snd_sock_msg "[INFO] Start network_post"
 
     # backup
     mv /etc/network/interfaces /etc/network/interfaces.1
@@ -95,7 +95,7 @@ function set_root_pwd(){
     echo "root:$TEMP_PW" | chpasswd
     echo -e "\n\n==== Auto OS setup script (2016 05, Walker)  ====" >> /etc/motd
 #    echo -e "====  Please change the default password: $TEMP_PW  ====\n\n\n" >> /etc/motd
-    echo "set default passwd"
+    echo "[INFO] Set default passwd"
 }
 
 
@@ -129,7 +129,7 @@ function pause(){
 
 
 function formate_d(){
-    snd_sock_msg "start formate_d"
+    snd_sock_msg "[INFO] Start formate_d"
 
     # set partition
     sfdisk /dev/sda < /tmp/partition_200G.txt
@@ -139,12 +139,12 @@ function formate_d(){
     mkfs.ext4 /dev/sda3
     mkswap /dev/sda2
     
-    echo "finish format disk"
+    echo "[INFO] Finish format disk"
 }
 
 
 function mount_d(){
-    snd_sock_msg "start mount_d"
+    snd_sock_msg "[INFO] Start mount_d"
     
     # create temp dir
     mkdir /mnt/debian
@@ -152,7 +152,7 @@ function mount_d(){
     mount /dev/sda3 /mnt/debian
     mkdir /mnt/debian/boot
     mount /dev/sda1 /mnt/debian/boot
-    echo "mount_d"
+    echo "[INFO] mount_d"
 }
 
 
@@ -177,14 +177,14 @@ iface eth0 inet static
 
 EOF
 
-echo "set interface"
+echo "[INFO] Set interface"
 
 /etc/init.d/networking restart
 ping -c 3 $IP_GW 
 
 /etc/init.d/ssh restart
 
-echo "restart network"
+echo "[INFO] Restart network"
 }
 
 function network_post(){
@@ -211,24 +211,24 @@ EOF
 
 
 function set_root_pwd(){
-    snd_sock_msg "start set_root_pwd"
+    snd_sock_msg "[INFO] Start set_root_pwd"
 
     echo "root:$TEMP_PW" | chpasswd
-    echo "set default passwd"
+    echo "[INFO] Set default passwd"
 }
 
 
 function get_tarball(){
-    snd_sock_msg "start get_tarball"
+    snd_sock_msg "[INFO] Start get_tarball"
 
     sshpass -p "$REMOTE_PASSWD" scp -o StrictHostKeyChecking=no root@$REMOTE_TARBALL_IP:$REMOTE_TARBALL_PATH/$REMOTE_TARBALL_NAME /mnt/debian/
     chk_status
-    echo "get tarball"
+    echo "[INFO] Get tarball"
 }
 
 
 function set_tarball(){
-    snd_sock_msg "start set_tarball"
+    snd_sock_msg "[INFO] Start set_tarball"
 
     cd /mnt/debian/
     tar zxf *.tgz
@@ -239,27 +239,26 @@ function set_tarball(){
     chmod +x /tmp/chroot_cmd.sh
     cp /tmp/chroot_cmd.sh /mnt/debian/
     chroot /mnt/debian/ /chroot_cmd.sh
-    echo "set tarball"
+    echo "[INFO] Set tarball"
 }
 
 
 function finish_msg(){
-    echo "please set /etc/hosts after reboot"
+    echo "[INFO] Please set /etc/hosts after reboot"
     sleep 5
 }
 
 
 function power_off(){
-    snd_sock_msg "start power_off"    
+    snd_sock_msg "[INFO] Start power_off"    
 
-    echo "========= Poweroff ========="
-    echo "========= Remove tarball ========"
+    echo "[INFO] Now poweroff"
     rm -f /$REMOTE_TARBALL_NAME
     poweroff
 }
 
 function do_reboot(){
-    echo "ready to reboot"
+    echo "[INFO] Ready to reboot"
     rm -f /$REMOTE_TARBALL_NAME
     reboot
 }

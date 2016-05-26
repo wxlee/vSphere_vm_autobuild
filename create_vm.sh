@@ -5,17 +5,18 @@
 
 # read config
 
-source $(pwd)/config.ini
+PWD=`pwd`
+source $PWD/config.ini
 
 
 function echo_msg(){
-    echo -e "\n$*\n"
+    echo -e "$*"
 }
 
 
 function chk_status(){
     if [ $? -ne '0' ];then
-        echo_msg something wrong !!
+        echo_msg "[WARN] something wrong !!"
         exit
     fi
 }
@@ -90,11 +91,11 @@ EEE
 
 
 function send_to_vsphere(){
-    echo_msg "send_to_vsphere: try to upload $PWD/g_create_vm.sh to $VSPHERE_IP path: /tmp"
+    echo_msg "[INFO] send_to_vsphere: try to upload $PWD/g_create_vm.sh to $VSPHERE_IP path: /tmp"
     sshpass -p "$VSPHERE_PSW" scp -o StrictHostKeyChecking=no $PWD/g_create_vm.sh $VSPHERE_USER@$VSPHERE_IP:/tmp/.
     chk_status 
 
-    echo_msg "send_to_vsphere: add execute permission"
+    echo_msg "[INFO] send_to_vsphere: add execute permission"
     sshpass -p "$VSPHERE_PSW" ssh -o StrictHostKeyChecking=no $VSPHERE_USER@$VSPHERE_IP chmod +x /tmp/g_create_vm.sh    
     chk_status
 
@@ -104,6 +105,7 @@ function send_to_vsphere(){
 function run_on_vsphere(){
     sshpass -p "$VSPHERE_PSW" ssh -o StrictHostKeyChecking=no $VSPHERE_USER@$VSPHERE_IP /tmp/g_create_vm.sh
     chk_status
+    echo_msg "[INFO] run_on_vsphere"
 }
 
 
@@ -113,6 +115,8 @@ function power_on_vm(){
 
     # power on
     sshpass -p "$VSPHERE_PSW" ssh -o StrictHostKeyChecking=no $VSPHERE_USER@$VSPHERE_IP vim-cmd vmsvc/power.on $vmid
+    
+    echo_msg "[INFO] power_on_vm"
 }
 
 #power_on_vm
@@ -121,6 +125,8 @@ function power_on_vm(){
 function remove_vcdrom(){
     sshpass -p "$VSPHERE_PSW" ssh -o StrictHostKeyChecking=no $VSPHERE_USER@$VSPHERE_IP "sed -i '/ide1/s/^/#/' ${VMFS_PATH}/${VM_NAME}/${VM_NAME}.vmx"
     chk_status
+
+    echo_msg "[INFO] remove_vcdrom"
 }
 
 #remove_vcdrom
