@@ -1,0 +1,83 @@
+#!/bin/bash
+# Walker 2016 05
+
+
+# Rebuild ISO
+# Set 'yes', if you modify the vm settings
+REBUILD_ISO='no'
+
+# New vm setting (need to rebuild iso)
+#####################################################
+IP_ADDR='x.x.x.x'
+IP_GW='x.x.x.x'
+IP_DNS='8.8.8.8'
+TEMP_PW='xxxxx'
+
+# remote tarball location
+REMOTE_TARBALL_IP='x.x.x.x'
+REMOTE_TARBALL_PATH='/backup'
+REMOTE_TARBALL_NAME='image.tgz'
+REMOTE_USER='user'
+REMOTE_PASSWD='xxxxx'
+
+# get the last part ip
+LAST_IP=`echo $IP_ADDR | cut -d'.' -f 4`
+
+# new vm hostname
+PRE_HOST="autobuild"
+HOST_NAME="$PRE_HOST$LAST_IP"
+
+# vSphere resource
+#########################################################
+# vsphere ip
+VSPHERE_IP='x.x.x.x'
+VSPHERE_USER='user'
+VSPHERE_PSW='xxxxxx'
+
+CPU='2'
+
+# MB
+RAM='2048'
+
+# GB
+SIZE='200'
+
+# IDC1
+ISO_PATH="/vmfs/volumes/xxx/Debian"
+ISO_NAME="image.iso"
+
+# IDC2
+#ISO_PATH="/vmfs/volumes/xxx/Debian/"
+#ISO_NAME="image.iso"
+
+VMFS_PATH="/vmfs/volumes/datastorexxx"
+VM_NAME="VM$LAST_IP-$HOST_NAME"
+
+#NETWORK_LABEL="Network-10.X.X.X"
+NETWORK_LABEL="Network-x.x.x.x"
+
+OS_TYPE="otherlinux-64"
+#########################################################
+
+# debian iso create
+#SETUP_SH_PATH='/opt/os_build'
+SETUP_SH_PATH=`pwd`
+SETUP_SH_NAME='all_setup_os.sh'
+SETUP_SH_CONF='config.ini'
+
+NAS_IP='x.x.x.x'
+NAS_USER='user'
+NAS_PASSW='xxxxx'
+NAS_PATH='/share/xxxx/Debian'
+#ISO_NAME='debian7_liveCD_x64_customized.iso'
+########################################################
+
+
+# socket server config
+SOC_SVR_IP='x.x.x.x'
+SOC_PORT='5000'
+
+
+
+
+# others
