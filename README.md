@@ -50,6 +50,8 @@ Without Options: According the setting on config.ini
  - Multi-thread concurrent build
  - Python wrapped
 
+### Other Info
+[Slides](https://docs.google.com/presentation/d/1_gdHZFmPc3iivoGIVRoMv8zC5PjkRooC3hacRhtHPu8/edit?usp=sharing)
 
 License
 ----
