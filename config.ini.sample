@@ -13,6 +13,14 @@ IP_GW='x.x.x.x'
 IP_DNS='8.8.8.8'
 TEMP_PW='xxxxx'
 
+# Disk
+#  partition 1: /boot
+#  partition 2: swap
+#  partition 3: /
+PARTITION_1="200M"
+PARTITION_SWAP="2G"
+
+
 # remote tarball location
 REMOTE_TARBALL_IP='x.x.x.x'
 REMOTE_TARBALL_PATH='/backup'

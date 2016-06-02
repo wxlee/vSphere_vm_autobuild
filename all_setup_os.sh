@@ -127,12 +127,36 @@ function pause(){
 }
 
 
+# fdisk noninteractive
+function do_partition(){
+    partition1=$1
+    partition2=$2
+
+    echo "[INFO] Create partition 1 size: $1"
+    echo "[INFO] Create swap size: $2"
+    echo "[INFO] Create other size to partition 3"
+
+(echo n; echo p; echo 1; echo ""; echo +$partition1; \
+echo n; echo p; echo 2; echo ""; echo +$partition2; \
+echo n; echo p; echo 3; echo ""; echo ""; \
+echo a; echo 1; \
+echo t; echo 2; echo 82; \
+echo p; \
+echo w; ) | fdisk /dev/sda 
+
+}
+
+
+
 
 function formate_d(){
     snd_sock_msg "[INFO] Start formate_d"
 
     # set partition
-    sfdisk /dev/sda < /tmp/partition_200G.txt
+    #sfdisk /dev/sda < /tmp/partition_200G.txt
+
+    # new partition
+    do_partition $PARTITION_1 $PARTITION_SWAP
 
     # format
     mkfs.ext4 /dev/sda1

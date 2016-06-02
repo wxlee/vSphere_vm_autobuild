@@ -44,9 +44,16 @@ Without Options: According the setting on config.ini
 # ./main.sh
 ```
 
+### Virtual Machine Disk 
+ - partition 1 (PARTITION_1)    : /boot 
+ - partition 2 (PARTITION_SWAP) : swap
+ - partition 3 (Other space)    : /
+
+
+
 ### Todos
 
- - Hard Code: partition tables (200G)
+ - Hard Code: partition tables (200G) 2016.06.02 Done
  - Multi-thread concurrent build
  - Python wrapped
 
