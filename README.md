@@ -50,6 +50,9 @@ Without Options: According the setting on config.ini
  - partition 3 (Other space)    : /
 
 
+### Default Virtual Machine Root Password
+According the value of 'TEMP_PW' in config.ini
+
 
 ### Todos
 
