@@ -4,11 +4,63 @@
 
 PWD=`pwd`
 
+
+# change value of key
+function change_cfg_var(){
+    # change config.ini
+    # change_cfg_var KEY VALUE
+    sed -i "/$1=/ s#[\x22|\x27].*[\x22|\x27]#\"$2\"#" $PWD/config.ini
+    echo "[INFO] Change config: $1=\"$2\""
+}
+
+
+# read opts from command and set parameter
+while getopts ":s:v:n:h" opt; do
+    case $opt in
+        s)
+            # VSPHERE_IP
+            chk_ip_format $OPTARG
+            change_cfg_var VSPHERE_IP $OPTARG
+            echo "Get vSphere ip: $OPTARG" >&2
+            #exit
+            ;;
+
+        v)
+            # IP_ADDR
+            chk_ip_format $OPTARG
+            change_cfg_var IP_ADDR $OPTARG
+            echo "Get virtual machine ip: $OPTARG" >&2
+            #exit
+            ;;
+
+        n)
+            # PRE_HOST
+            change_cfg_var PRE_HOST $OPTARG
+            echo "Set vm name: $HOST_NAME" >&2
+            ;;
+        h)
+            echo "Use $0" >&2
+            echo "-s: vSphere ip" >&2
+            echo "-v: virtual machine ip" >&2
+            echo "-n: vm name" >&2
+            exit
+            ;;
+
+        \?)
+            echo "Invalid option: -$OPTARG" >&2
+            $0 -h
+            exit
+            ;;
+    esac
+done
+
+# load confing and functions
 source $PWD/config.ini
 source $PWD/create_vm.sh
 source $PWD/debian_iso_build.sh
 source $PWD/chk_resource.sh
 source $PWD/sock_svr.sh
+
 
 # resource check
 chk_tarball
