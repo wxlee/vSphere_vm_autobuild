@@ -15,7 +15,7 @@ This tool is wrote by shell script based on bash and test on Debian7 64bit.
 You need install some packages for build iso:
 
 ```sh
-$ sudo apt-get install debootstrap syslinux squashfs-tools genisoimage memtest86+ rsync
+# apt-get install debootstrap syslinux squashfs-tools genisoimage memtest86+ rsync
 ```
 
 ### How to use it
@@ -27,7 +27,7 @@ $ sudo apt-get install debootstrap syslinux squashfs-tools genisoimage memtest86
 
 With options:
 ```sh
-$ ./main.sh -h
+# ./main.sh -h
 Use ./main.sh
 -s: vSphere ip
 -v: virtual machine ip
@@ -36,12 +36,12 @@ Use ./main.sh
 Example:
 Create vm named 'web' and set ip (192.168.1.1) on vSphere ESXi (10.10.10.10) 
 ```sh
-$ ./main.sh -s 10.10.10.10 -v 192.168.1.1 -n web
+# ./main.sh -s 10.10.10.10 -v 192.168.1.1 -n web
 ```
 
 Without Options: According the setting on config.ini
 ```sh
-$ ./main.sh
+# ./main.sh
 ```
 
 ### Todos
