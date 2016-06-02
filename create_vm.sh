@@ -26,6 +26,7 @@ function gen_create_vm_shell(){
 
 cat << EEE > $PWD/g_create_vm.sh
 #!/bin/sh
+# run on vSphere ESXi 5.0.0
 
 # create vm folder
 cd ${VMFS_PATH}

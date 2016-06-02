@@ -2,6 +2,7 @@
 # Walker 2016 05
 #
 # Debian basic OS deploy script
+#  This script will run on debian live system boot from ISO
 
 source /etc/profile
 source /root/config.ini
