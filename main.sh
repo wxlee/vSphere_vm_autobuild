@@ -13,6 +13,30 @@ function change_cfg_var(){
     echo "[INFO] Change config: $1=\"$2\""
 }
 
+function chk_ip_format(){
+    local  ip=$1
+    local  stat=1
+
+    if [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
+        OIFS=$IFS
+        IFS='.'
+        ip=($ip)
+        IFS=$OIFS
+        [[ ${ip[0]} -le 255 && ${ip[1]} -le 255 \
+            && ${ip[2]} -le 255 && ${ip[3]} -le 255 ]]
+        stat=$?
+    fi
+    #echo $stat
+    #return $stat
+
+    if [ "$stat" -ne "0" ]; then
+        echo "[WARN] Check ip format fail, the input is $1"
+        exit
+    else
+        echo "[INFO] Chcek ip format ok, the input is $1"
+    fi
+}
+
 
 # read opts from command and set parameter
 while getopts ":s:v:n:h" opt; do
@@ -58,9 +82,8 @@ done
 source $PWD/config.ini
 source $PWD/create_vm.sh
 source $PWD/debian_iso_build.sh
-source $PWD/chk_resource.sh
 source $PWD/sock_svr.sh
-
+source $PWD/chk_resource.sh
 
 # resource check
 chk_tarball

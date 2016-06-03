@@ -60,6 +60,11 @@ According the value of 'TEMP_PW' in config.ini
  - Multi-thread concurrent build
  - Python wrapped
 
+
+### Q & A
+ - Q: I can not upload ISO to NAS. A: Maybe the password contain special character!! Add public key to NAS authorized_keys file.
+
+
 ### Other Info
 [Slides](https://docs.google.com/presentation/d/1_gdHZFmPc3iivoGIVRoMv8zC5PjkRooC3hacRhtHPu8/edit?usp=sharing)
 
