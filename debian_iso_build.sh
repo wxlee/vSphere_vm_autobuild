@@ -21,6 +21,7 @@ function chk_status(){
 
 function add_script_to_iso(){
 if [ -d /tmp/live_boot  ]; then
+    mkdir -p /tmp/live_boot/chroot/root/
     cd /tmp/live_boot
     echo_msg "[INFO] Copy script and config"
     cp $SETUP_SH_PATH/$SETUP_SH_NAME chroot/root/.
@@ -185,7 +186,8 @@ mkdir live_boot && cd live_boot
 
 echo_msg "[INFO] Get base os"
 
-debootstrap --arch=amd64 wheezy chroot http://ftp.tw.debian.org/debian/
+#debootstrap --arch=amd64 wheezy chroot http://ftp.tw.debian.org/debian/
+debootstrap --arch=amd64 wheezy chroot $MIRROR
 
 #Taiwan mirror
 #http://ftp.tw.debian.org/debian/

@@ -90,3 +90,7 @@ SOC_PORT='5000'
 
 
 # others
+
+# Mirror site
+# https://www.debian.org/mirror/list
+MIRROR='http://ftp.jp.debian.org/debian/'
