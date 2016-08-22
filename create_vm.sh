@@ -33,7 +33,7 @@ cd ${VMFS_PATH}
 mkdir ${VM_NAME}
 
 # create vm file
-vmkfstools -c ${SIZE}G -a lsilogic $VM_NAME/$VM_NAME.vmdk
+vmkfstools -c ${SIZE}G -d thin -a lsilogic $VM_NAME/$VM_NAME.vmdk
 
 # creating the config file
 touch $NAME/$VM_NAME.vmx
